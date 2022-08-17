@@ -1,0 +1,39 @@
+﻿@page
+@model AIServicesDemo.Pages.RekognitionModel
+@{
+}
+
+<div>
+    <h2 class="display-4">.NET EDD Tagging</h2>
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="form-group">
+            <label asp-for="FormFile" class="control-label">Photo:</label>
+            <input asp-for="FormFile" class="form-control" type="file" />
+        </div>
+        <div class="form-group">
+            <input type="submit" class="btn btn-primary" asp-page-handler="Faces" value="Detect Faces"/>
+            <input type="submit" class="btn btn-primary" asp-page-handler="Entities" value="Detect Entities"/>
+            <input type="submit" class="btn btn-primary" asp-page-handler="PPE" value="Detect PPE"/>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    @if (!string.IsNullOrEmpty(Model.FileName))
+                    {
+                        <img class="w-100" src="uploads/@Model.FileName" />
+                    }
+                </div>
+                <div class="col-6">
+                    @Html.Raw(Model.Result)
+                    @if (!string.IsNullOrEmpty(Model.NewFileName))
+                    {
+                        <img class="w-100" src="uploads/@Model.NewFileName" />
+                    }
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+</div>
