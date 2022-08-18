@@ -7,20 +7,24 @@
 <div>
     <h2 class="display-4">Discover insights and relationships in text</h2>
 
-   <form method="post">
-
+    <form method="post">
         <div class="form-group">
             <label for="Description">Text to analyze:</label>
             <textarea class="form-control" id="Description" name="Description" rows="5">@Model.Description</textarea>
         </div>
-        <div class="form-group">
-            <input type="submit" class="btn btn-primary" asp-page-handler="Language" value="Detect language"/>
-            <input type="submit" class="btn btn-primary" asp-page-handler="Entities" value="Detect entities"/>
-            <input type="submit" class="btn btn-primary" asp-page-handler="PII" value="Detect PII"/>
-        </div>
-        <div class="form-group">
-            @Html.Raw(Model.Result)
+        <div class="form-group pt-3">
+            <input type="submit" class="btn btn-primary" asp-page-handler="Language" value="Detect language" />
+            <input type="submit" class="btn btn-primary" asp-page-handler="Entities" value="Detect entities" />
+            <input type="submit" class="btn btn-primary" asp-page-handler="PII" value="Detect PII" />
         </div>
     </form>
+
+    <div class="container">
+        <div class="row">
+            <div class="col pt-3">
+                @Html.Raw(Model.Result)
+            </div>
+        </div>
+    </div>
 
 </div>

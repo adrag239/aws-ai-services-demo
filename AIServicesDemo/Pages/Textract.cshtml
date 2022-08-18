@@ -11,23 +11,23 @@
             <label asp-for="FormFile" class="control-label">Receipt image:</label>
             <input asp-for="FormFile" class="form-control" type="file" />
         </div>
-        <div class="form-group">
+        <div class="form-group pt-3">
             <input type="submit" value="Submit receipt" class="btn btn-primary" />
         </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-6">
-                    @if (!string.IsNullOrEmpty(Model.FileName))
-                    {
-                        <img class="w-100" src="uploads/@Model.FileName" />
-                    }
-                </div>
-                <div class="col-6">
-                    @Html.Raw(Model.Result)
-                </div>
+    </form>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-6 pt-3">
+                @if (!string.IsNullOrEmpty(Model.FileName))
+                {
+                    <img class="w-100" src="uploads/@Model.FileName" />
+                }
+            </div>
+            <div class="col-6 pt-3">
+                @Html.Raw(Model.Result)
             </div>
         </div>
-
-    </form>
+    </div>
 
 </div>
