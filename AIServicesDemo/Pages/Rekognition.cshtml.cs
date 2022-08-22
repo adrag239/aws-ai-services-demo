@@ -156,7 +156,6 @@ namespace AIServicesDemo.Pages
 
             var detectPPEResponse = await _rekognitionClient.DetectProtectiveEquipmentAsync(detectPPERequest);
 
-
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("PPE:<br>");
             stringBuilder.AppendLine("==========================<br>");
@@ -177,6 +176,49 @@ namespace AIServicesDemo.Pages
 
                 Result = stringBuilder.ToString();
 
+            }
+        }
+
+        public async Task OnPostTextAsync()
+        {
+            if (FormFile == null)
+            {
+                return;
+            }
+            // save image to display it
+            var fileName = String.Format("{0}.{1}", Guid.NewGuid().ToString(), Path.GetExtension(FormFile.FileName));
+            var fullFileName = Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
+
+            using (var stream = new FileStream(fullFileName, FileMode.Create))
+            {
+                await FormFile.CopyToAsync(stream);
+                FileName = fileName;
+            }
+
+            var memoryStream = new MemoryStream();
+            await FormFile.CopyToAsync(memoryStream);
+
+            var detectTextRequest = new DetectTextRequest()
+            {
+                Image = new Amazon.Rekognition.Model.Image { Bytes = memoryStream }
+            };
+
+            var detectTextResponse = await _rekognitionClient.DetectTextAsync(detectTextRequest);
+
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("Text:<br>");
+            stringBuilder.AppendLine("==========================<br>");
+
+            foreach (var text in detectTextResponse.TextDetections)
+            {
+                if (text.Type == TextTypes.LINE)
+                {
+                    stringBuilder.AppendFormat(
+                        "Detected text: <b>{0}</b><br>",
+                        text.DetectedText);
+                }
+
+                Result = stringBuilder.ToString();
             }
         }
     }
