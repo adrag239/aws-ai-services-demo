@@ -3,15 +3,16 @@ using Amazon.Textract.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text;
+using System.Text.Encodings.Web;
 
 namespace AIServicesDemo.Pages
 {
     public class TextractModel : PageModel
     {
         [BindProperty]
-        public IFormFile FormFile { get; set; }
-        public string FileName { get; set; }
-        public string Result { get; set; }
+        public IFormFile? FormFile { get; set; }
+        public string FileName { get; set; } = string.Empty;
+        public string Result { get; set; } = String.Empty;
 
         private readonly IAmazonTextract _textractClient;
         private readonly IWebHostEnvironment _hostenvironment;
@@ -28,6 +29,10 @@ namespace AIServicesDemo.Pages
 
         public async Task OnPostAsync()
         {
+            if (FormFile == null)
+            {
+                return;
+            }
             // save image to display it
             var fileName = String.Format("{0}.{1}", Guid.NewGuid().ToString(), Path.GetExtension(FormFile.FileName));
 
@@ -78,8 +83,7 @@ namespace AIServicesDemo.Pages
                             "Item: <b>{0}</b>, Price: <b>{1}</b><br>",
                             title,
                             price);               
-                    }
-                    
+                    }            
                 }
             }
 

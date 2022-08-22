@@ -9,11 +9,11 @@
 
     <form method="post">
         <div class="form-group">
-            <label for="Description">Text to analyze:</label>
-            <textarea class="form-control" id="Description" name="Description" rows="5">@Model.Description</textarea>
+            <label for="Text">Text to analyze:</label>
+            <textarea class="form-control" id="Text" name="Text" rows="5">@Model.Text</textarea>
         </div>
         <div class="form-group pt-3">
-            <input type="submit" class="btn btn-primary" asp-page-handler="Language" value="Detect language" />
+            <input type="submit" class="btn btn-primary" asp-page-handler="Language" value="Detect language & translate to English" />
             <input type="submit" class="btn btn-primary" asp-page-handler="Entities" value="Detect entities" />
             <input type="submit" class="btn btn-primary" asp-page-handler="PII" value="Detect PII" />
         </div>

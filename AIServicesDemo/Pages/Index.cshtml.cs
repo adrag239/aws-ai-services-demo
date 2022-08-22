@@ -1,5 +1,7 @@
 ﻿using Amazon.Comprehend;
 using Amazon.Comprehend.Model;
+using Amazon.Translate;
+using Amazon.Translate.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text;
@@ -9,15 +11,16 @@ namespace AIServicesDemo.Pages
     public class IndexModel : PageModel
     {
         [BindProperty]
-        public string Description { get; set; }
-
-        public string Result { get; set; }
+        public string Text { get; set; } = String.Empty; 
+        public string Result { get; set; } = String.Empty;
 
         private readonly IAmazonComprehend _comprehendClient;
+        private readonly IAmazonTranslate _translateClient;
 
-        public IndexModel(IAmazonComprehend comprehendClient)
+        public IndexModel(IAmazonComprehend comprehendClient, IAmazonTranslate translateClient)
         {
             _comprehendClient = comprehendClient;
+            _translateClient = translateClient;
         }
 
         public void OnGet()
@@ -29,21 +32,31 @@ namespace AIServicesDemo.Pages
         {
             var request = new DetectDominantLanguageRequest()
             {
-                Text = Description
+                Text = Text
             };
 
             var response = await _comprehendClient.DetectDominantLanguageAsync(request);
+            var languageCode = response.Languages.First().LanguageCode;
 
             var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("Dominant Language:<br>");
+            stringBuilder.AppendFormat("Dominant Language: <b>{0}</b><br>", languageCode);
             stringBuilder.AppendLine("==========================<br>");
 
-            foreach (var dominantLanguage in response.Languages)
+            if (languageCode != "en")
             {
-                stringBuilder.AppendFormat(
-                    "Language Code: <b>{0}</b>, Score: <b>{1}</b><br>",
-                    dominantLanguage.LanguageCode,
-                    dominantLanguage.Score);
+                stringBuilder.AppendFormat("Translating from <b>{0}</b>:<br>", languageCode);
+                stringBuilder.AppendLine("==========================<br>");
+
+                var translatRequest = new TranslateTextRequest
+                {
+                    Text = Text,
+                    SourceLanguageCode = languageCode,
+                    TargetLanguageCode = "en"
+                };
+
+                var translatResponse = await _translateClient.TranslateTextAsync(translatRequest);
+
+                stringBuilder.Append(translatResponse?.TranslatedText);
             }
 
             Result = stringBuilder.ToString();
@@ -53,7 +66,7 @@ namespace AIServicesDemo.Pages
         {
             var request = new DetectEntitiesRequest()
             {
-                Text = Description,
+                Text = Text,
                 LanguageCode = "en"
             };
 
@@ -81,7 +94,7 @@ namespace AIServicesDemo.Pages
         {
             var request = new DetectPiiEntitiesRequest()
             {
-                Text = Description,
+                Text = Text,
                 LanguageCode = "en"
             };
 
@@ -95,7 +108,7 @@ namespace AIServicesDemo.Pages
             {
                 stringBuilder.AppendFormat(
                     "Text: <b>{0}</b>, Type: <b>{1}</b>, Score: <b>{2}</b>, Offset: {3}-{4}<br>",
-                    Description.Substring(entity.BeginOffset, entity.EndOffset - entity.BeginOffset),
+                    Text.Substring(entity.BeginOffset, entity.EndOffset - entity.BeginOffset),
                     entity.Type,
                     entity.Score,
                     entity.BeginOffset,

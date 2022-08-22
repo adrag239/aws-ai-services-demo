@@ -13,18 +13,16 @@ namespace AIServicesDemo.Pages
     public class RekognitionModel : PageModel
     {
         [BindProperty]
-        public IFormFile FormFile { get; set; }
-        public string FileName { get; set; }
-        public string NewFileName { get; set; }
-        public string Result { get; set; }
+        public IFormFile? FormFile { get; set; }
+        public string FileName { get; set; } = String.Empty;
+        public string NewFileName { get; set; } = String.Empty;
+        public string Result { get; set; } = String.Empty;
 
-        private readonly IAmazonTextract _textractClient;
         private readonly IAmazonRekognition _rekognitionClient;
         private readonly IWebHostEnvironment _hostenvironment;
 
-        public RekognitionModel(IAmazonTextract textractClient, IAmazonRekognition rekognitionClient, IWebHostEnvironment hostenvironment)
+        public RekognitionModel(IAmazonRekognition rekognitionClient, IWebHostEnvironment hostenvironment)
         {
-            _textractClient = textractClient;
             _rekognitionClient = rekognitionClient;
             _hostenvironment = hostenvironment;
         }
@@ -35,6 +33,10 @@ namespace AIServicesDemo.Pages
 
         public async Task OnPostFacesAsync()
         {
+            if (FormFile == null)
+            {
+                return;
+            }
             // save image to display it
             var fileName = String.Format("{0}.{1}", Guid.NewGuid().ToString(), Path.GetExtension(FormFile.FileName));
             var fullFileName = Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
@@ -87,6 +89,10 @@ namespace AIServicesDemo.Pages
 
         public async Task OnPostEntitiesAsync()
         {
+            if (FormFile == null)
+            {
+                return;
+            }
             // save image to display it
             var fileName = String.Format("{0}.{1}", Guid.NewGuid().ToString(), Path.GetExtension(FormFile.FileName));
             var fullFileName = Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
@@ -126,6 +132,10 @@ namespace AIServicesDemo.Pages
 
         public async Task OnPostPPEAsync()
         {
+            if (FormFile == null)
+            {
+                return;
+            }
             // save image to display it
             var fileName = String.Format("{0}.{1}", Guid.NewGuid().ToString(), Path.GetExtension(FormFile.FileName));
             var fullFileName = Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
@@ -158,13 +168,11 @@ namespace AIServicesDemo.Pages
                     foreach (var eq in bodyPart.EquipmentDetections)
                     {
                         stringBuilder.AppendFormat(
-                    "Body part: <b>{0}</b>, Type: <b>{1}</b>, Covered: <b>{2}</b><br>",
-                    bodyPart.Name.Value,
-                    eq.Type.Value,
-                    eq.CoversBodyPart.Value);
-
+                            "Body part: <b>{0}</b>, Type: <b>{1}</b>, Covered: <b>{2}</b><br>",
+                            bodyPart.Name.Value,
+                            eq.Type.Value,
+                            eq.CoversBodyPart.Value);
                     }
-
                 }
 
                 Result = stringBuilder.ToString();
