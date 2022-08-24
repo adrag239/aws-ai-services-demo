@@ -350,4 +350,6 @@ MigrationBackup/
 .ionide/
 
 # My extras
-uploads/
+**/uploads/*.jpg
+**/uploads/*.jpeg
+**/uploads/*.png

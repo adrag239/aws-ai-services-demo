@@ -1,12 +1,12 @@
 using Amazon.Rekognition;
 using Amazon.Rekognition.Model;
-using Amazon.Textract;
-using Amazon.Textract.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.Text;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Drawing.Processing;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp;
 
 namespace AIServicesDemo.Pages
 {
@@ -38,9 +38,9 @@ namespace AIServicesDemo.Pages
                 return;
             }
             // save image to display it
-            var fileName = String.Format("{0}.{1}", Guid.NewGuid().ToString(), Path.GetExtension(FormFile.FileName));
-            var fullFileName = Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
-            var newFileName = String.Format("{0}_faces.{1}", Guid.NewGuid().ToString(), Path.GetExtension(FormFile.FileName));
+            var fileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile.FileName));
+            var fullFileName = System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
+            var newFileName = String.Format("{0}_faces{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile.FileName));
 
             using (var stream = new FileStream(fullFileName, FileMode.Create))
             {
@@ -60,12 +60,8 @@ namespace AIServicesDemo.Pages
 
             if (detectFacesResponse.FaceDetails.Count > 0)
             {
-                // Load a bitmap to modify with face bounding box rectangles
-                var facesHighlighted = new Bitmap(fullFileName);
-                var pen = new Pen(Color.Red, 3);
-
-                // Create a graphics context
-                using (var graphics = Graphics.FromImage(facesHighlighted))
+                // Load image to modify with face bounding box rectangle
+                using (var image = SixLabors.ImageSharp.Image.Load(fullFileName))
                 {
                     foreach (var faceDetail in detectFacesResponse.FaceDetails)
                     {
@@ -74,14 +70,21 @@ namespace AIServicesDemo.Pages
 
                         // Draw the rectangle using the bounding box values
                         // They are percentages so scale them to picture
-                        graphics.DrawRectangle(pen, x: facesHighlighted.Width * boundingBox.Left,
-                            y: facesHighlighted.Height * boundingBox.Top,
-                            width: facesHighlighted.Width * boundingBox.Width,
-                            height: facesHighlighted.Height * boundingBox.Height);
+                        image.Mutate(x => x.DrawLines(
+                            Rgba32.ParseHex("FF0000"),
+                            5,
+                            new PointF[] {
+                                new PointF(image.Width * boundingBox.Left, image.Height * boundingBox.Top),
+                                new PointF(image.Width * (boundingBox.Left + boundingBox.Width), image.Height * boundingBox.Top),
+                                new PointF(image.Width * (boundingBox.Left + boundingBox.Width), image.Height * (boundingBox.Top + boundingBox.Height)),
+                                new PointF(image.Width * boundingBox.Left, image.Height * (boundingBox.Top + boundingBox.Height)),
+                                new PointF(image.Width * boundingBox.Left, image.Height * boundingBox.Top),
+                            }
+                        ));
                     }
 
                     // Save the new image
-                    facesHighlighted.Save(Path.Combine(_hostenvironment.WebRootPath, "uploads", newFileName), ImageFormat.Jpeg);
+                    image.SaveAsJpeg(System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", newFileName));
                     NewFileName = newFileName;
                 }
             }
@@ -94,8 +97,8 @@ namespace AIServicesDemo.Pages
                 return;
             }
             // save image to display it
-            var fileName = String.Format("{0}.{1}", Guid.NewGuid().ToString(), Path.GetExtension(FormFile.FileName));
-            var fullFileName = Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
+            var fileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile.FileName));
+            var fullFileName = System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
 
             using (var stream = new FileStream(fullFileName, FileMode.Create))
             {
@@ -137,8 +140,8 @@ namespace AIServicesDemo.Pages
                 return;
             }
             // save image to display it
-            var fileName = String.Format("{0}.{1}", Guid.NewGuid().ToString(), Path.GetExtension(FormFile.FileName));
-            var fullFileName = Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
+            var fileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile.FileName));
+            var fullFileName = System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
 
             using (var stream = new FileStream(fullFileName, FileMode.Create))
             {
@@ -186,8 +189,8 @@ namespace AIServicesDemo.Pages
                 return;
             }
             // save image to display it
-            var fileName = String.Format("{0}.{1}", Guid.NewGuid().ToString(), Path.GetExtension(FormFile.FileName));
-            var fullFileName = Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
+            var fileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile.FileName));
+            var fullFileName = System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
 
             using (var stream = new FileStream(fullFileName, FileMode.Create))
             {

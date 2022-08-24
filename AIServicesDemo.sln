@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIServicesDemo", "AIService
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{1EC1EA9C-2D75-4638-B96F-40A925324C0D}"
 	ProjectSection(SolutionItems) = preProject
+		Samples\cv.png = Samples\cv.png
+		Samples\data-scientist-cv-example.png = Samples\data-scientist-cv-example.png
 		Samples\faces_194895262.jpeg = Samples\faces_194895262.jpeg
 		Samples\faces_202941910.jpeg = Samples\faces_202941910.jpeg
 		Samples\faces_211907333.jpeg = Samples\faces_211907333.jpeg
@@ -16,7 +18,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{1EC1
 		Samples\ppe_329822560.jpeg = Samples\ppe_329822560.jpeg
 		Samples\ppe_366204808.jpeg = Samples\ppe_366204808.jpeg
 		Samples\receipt_223979544.jpeg = Samples\receipt_223979544.jpeg
+		Samples\university-grant-form-samples.jpg = Samples\university-grant-form-samples.jpg
 		Samples\whole_foods_receipt.jpg = Samples\whole_foods_receipt.jpg
+		Samples\wine_label.jpg = Samples\wine_label.jpg
 	EndProjectSection
 EndProject
 Global

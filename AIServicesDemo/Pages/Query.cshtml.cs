@@ -36,7 +36,7 @@ namespace AIServicesDemo.Pages
                 return;
             }
             // save image to display it
-            var fileName = String.Format("{0}.{1}", Guid.NewGuid().ToString(), Path.GetExtension(FormFile.FileName));
+            var fileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), Path.GetExtension(FormFile.FileName));
 
             using (var stream = new FileStream(Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName), FileMode.Create))
             {
