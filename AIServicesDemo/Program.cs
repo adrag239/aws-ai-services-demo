@@ -11,27 +11,22 @@ builder.Services.AddRazorPages();
 // Add AI Services
 builder.Services.AddScoped<IAmazonComprehend>(s =>
 {
-    var comprehendClient = new AmazonComprehendClient(Amazon.RegionEndpoint.EUWest1);
-
-    return comprehendClient;
+    return new AmazonComprehendClient(Amazon.RegionEndpoint.EUWest1);
 });
+
 builder.Services.AddScoped<IAmazonTranslate>(s =>
 {
-    var translateClient = new AmazonTranslateClient(Amazon.RegionEndpoint.EUWest1);
-
-    return translateClient;
+    return new AmazonTranslateClient(Amazon.RegionEndpoint.EUWest1);
 });
+
 builder.Services.AddScoped<IAmazonTextract>(s =>
 {
-    var textractClient = new AmazonTextractClient(Amazon.RegionEndpoint.EUWest1);
-
-    return textractClient;
+    return new AmazonTextractClient(Amazon.RegionEndpoint.EUWest1);
 });
+
 builder.Services.AddScoped<IAmazonRekognition>(s =>
 {
-    var rekognitionClient = new AmazonRekognitionClient(Amazon.RegionEndpoint.EUWest1);
-
-    return rekognitionClient;
+    return new AmazonRekognitionClient(Amazon.RegionEndpoint.EUWest1);
 });
 
 var app = builder.Build();
