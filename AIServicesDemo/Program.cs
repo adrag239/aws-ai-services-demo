@@ -1,4 +1,5 @@
 using Amazon.Comprehend;
+using Amazon.Extensions.NETCore.Setup;
 using Amazon.Rekognition;
 using Amazon.Textract;
 using Amazon.Translate;
@@ -9,25 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 
 // Add AI Services
-builder.Services.AddScoped<IAmazonComprehend>(s =>
-{
-    return new AmazonComprehendClient(Amazon.RegionEndpoint.EUWest1);
-});
-
-builder.Services.AddScoped<IAmazonTranslate>(s =>
-{
-    return new AmazonTranslateClient(Amazon.RegionEndpoint.EUWest1);
-});
-
-builder.Services.AddScoped<IAmazonTextract>(s =>
-{
-    return new AmazonTextractClient(Amazon.RegionEndpoint.EUWest1);
-});
-
-builder.Services.AddScoped<IAmazonRekognition>(s =>
-{
-    return new AmazonRekognitionClient(Amazon.RegionEndpoint.EUWest1);
-});
+builder.Services.AddAWSService<IAmazonComprehend>();
+builder.Services.AddAWSService<IAmazonTranslate>();
+builder.Services.AddAWSService<IAmazonTextract>();
+builder.Services.AddAWSService<IAmazonRekognition>();
 
 var app = builder.Build();
 

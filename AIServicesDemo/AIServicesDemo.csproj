@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="AWSSDK.Comprehend" Version="3.7.7.33" />
+    <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.2" />
     <PackageReference Include="AWSSDK.Rekognition" Version="3.7.10" />
     <PackageReference Include="AWSSDK.Textract" Version="3.7.5.44" />
     <PackageReference Include="AWSSDK.Translate" Version="3.7.5.17" />
