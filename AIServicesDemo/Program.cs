@@ -1,5 +1,4 @@
 using Amazon.Comprehend;
-using Amazon.Extensions.NETCore.Setup;
 using Amazon.Rekognition;
 using Amazon.Textract;
 using Amazon.Translate;
