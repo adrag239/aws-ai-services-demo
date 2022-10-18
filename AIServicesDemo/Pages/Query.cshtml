@@ -1,14 +1,15 @@
 ﻿@page
 @model AIServicesDemo.Pages.QueryModel
 @{
+    ViewData["Title"] = "Query";
 }
 
 <div>
-    <h2 class="display-4">Query document</h2>
+    <h2 class="display-4">Query form</h2>
 
     <form method="post" enctype="multipart/form-data">
         <div class="form-group">
-            <label asp-for="FormFile" class="control-label">Receipt image:</label>
+            <label asp-for="FormFile" class="control-label">Form:</label>
             <input asp-for="FormFile" class="form-control" type="file" />
         </div>
         <div class="form-group pt-3">
