@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AIServicesDemo", "AIService
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{1EC1EA9C-2D75-4638-B96F-40A925324C0D}"
 	ProjectSection(SolutionItems) = preProject
-		Samples\bbq_receipt.jpeg = Samples\bbq_receipt.jpeg
+		Samples\bbq_receipt.jpg = Samples\bbq_receipt.jpg
 		Samples\beer_label.jpg = Samples\beer_label.jpg
 		Samples\family.jpg = Samples\family.jpg
 		Samples\grunt.jpg = Samples\grunt.jpg
