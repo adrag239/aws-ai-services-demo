@@ -13,12 +13,12 @@ namespace AIServicesDemo.Pages
     public class IdentityCheckModel : PageModel
     {
         [BindProperty]
-        public IFormFile? FormFile1 { get; set; }
+        public IFormFile? IdentityFormFile { get; set; }
         [BindProperty]
-        public IFormFile? FormFile2 { get; set; }
-        public string FileName1 { get; set; } = String.Empty;
-        public string FileName2 { get; set; } = String.Empty;
-        public string NewFileName1 { get; set; } = String.Empty;
+        public IFormFile? PhotoFormFile { get; set; }
+        public string IdentityFileName { get; set; } = String.Empty;
+        public string PhotoFileName { get; set; } = String.Empty;
+        public string NewPhotoFileName { get; set; } = String.Empty;
         public string Result { get; set; } = String.Empty;
 
         private readonly IAmazonRekognition _rekognitionClient;
@@ -36,41 +36,41 @@ namespace AIServicesDemo.Pages
 
         public async Task OnPostIdentitiesAsync()
         {
-            if ((FormFile1 == null) || (FormFile2 == null))
+            if ((IdentityFormFile == null) || (PhotoFormFile == null))
             {
                 return;
             }
-            // save image to display it
-            var fileName1 = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile1.FileName));
-            var fullFileName1 = System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName1);
-            var newFileName1 = String.Format("{0}_id{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile1.FileName));
+            // save id to display it
+            var identityFileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(IdentityFormFile.FileName));
+            var fullIdentityFileName = System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", identityFileName);
 
-            using (var stream = new FileStream(fullFileName1, FileMode.Create))
+            using (var stream = new FileStream(fullIdentityFileName, FileMode.Create))
             {
-                await FormFile1.CopyToAsync(stream);
-                FileName1 = fileName1;
+                await IdentityFormFile.CopyToAsync(stream);
+                IdentityFileName = identityFileName;
             }
 
-            // save image to display it
-            var fileName2 = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile2.FileName));
-            var fullFileName2 = System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName2);
+            // save photo to display it
+            var photoFileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(PhotoFormFile.FileName));
+            var fullPhotoFileName = System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", photoFileName);
+            var newPhotoFileName = String.Format("{0}_id{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(IdentityFormFile.FileName));
 
-            using (var stream = new FileStream(fullFileName2, FileMode.Create))
+            using (var stream = new FileStream(fullPhotoFileName, FileMode.Create))
             {
-                await FormFile2.CopyToAsync(stream);
-                FileName2 = fileName2;
+                await PhotoFormFile.CopyToAsync(stream);
+                PhotoFileName = photoFileName;
             }
 
-            var memoryStream1 = new MemoryStream();
-            await FormFile1.CopyToAsync(memoryStream1);
+            var identityMemoryStream = new MemoryStream();
+            await IdentityFormFile.CopyToAsync(identityMemoryStream);
 
-            var memoryStream2 = new MemoryStream();
-            await FormFile2.CopyToAsync(memoryStream2);
+            var photoMemoryStream = new MemoryStream();
+            await PhotoFormFile.CopyToAsync(photoMemoryStream);
 
             var compareFacesRequest = new CompareFacesRequest()
             {
-                SourceImage = new Amazon.Rekognition.Model.Image { Bytes = memoryStream1 },
-                TargetImage = new Amazon.Rekognition.Model.Image { Bytes = memoryStream2 }
+                SourceImage = new Amazon.Rekognition.Model.Image { Bytes = identityMemoryStream },
+                TargetImage = new Amazon.Rekognition.Model.Image { Bytes = photoMemoryStream }
             };
 
             var compareFacesResponse = await _rekognitionClient.CompareFacesAsync(compareFacesRequest);
@@ -86,7 +86,7 @@ namespace AIServicesDemo.Pages
                     compareFacesResponse.FaceMatches[0].Similarity);
 
                 // Load image to modify with face bounding box rectangle
-                using (var image = SixLabors.ImageSharp.Image.Load(fullFileName2))
+                using (var image = SixLabors.ImageSharp.Image.Load(fullPhotoFileName))
                 {
                     var faceDetail = compareFacesResponse.FaceMatches[0].Face;
 
@@ -112,8 +112,8 @@ namespace AIServicesDemo.Pages
                     ));
 
                     // Save the new image
-                    image.SaveAsJpeg(System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", newFileName1));
-                    NewFileName1 = newFileName1;
+                    image.SaveAsJpeg(System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", newPhotoFileName));
+                    NewPhotoFileName = newPhotoFileName;
                 }
 
             }
