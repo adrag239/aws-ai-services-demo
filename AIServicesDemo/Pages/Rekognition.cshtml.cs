@@ -3,9 +3,6 @@ using Amazon.Rekognition.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text;
-using SixLabors.ImageSharp.Processing;
-using SixLabors.ImageSharp.Drawing.Processing;
-using SixLabors.ImageSharp.PixelFormats;
 using SixLabors.ImageSharp;
 
 namespace AIServicesDemo.Pages
@@ -69,18 +66,7 @@ namespace AIServicesDemo.Pages
                         var boundingBox = faceDetail.BoundingBox;
 
                         // Draw the rectangle using the bounding box values
-                        // They are percentages so scale them to picture
-                        image.Mutate(x => x.DrawLines(
-                            Rgba32.ParseHex("FF0000"),
-                            5,
-                            new PointF[] {
-                                new PointF(image.Width * boundingBox.Left, image.Height * boundingBox.Top),
-                                new PointF(image.Width * (boundingBox.Left + boundingBox.Width), image.Height * boundingBox.Top),
-                                new PointF(image.Width * (boundingBox.Left + boundingBox.Width), image.Height * (boundingBox.Top + boundingBox.Height)),
-                                new PointF(image.Width * boundingBox.Left, image.Height * (boundingBox.Top + boundingBox.Height)),
-                                new PointF(image.Width * boundingBox.Left, image.Height * boundingBox.Top),
-                            }
-                        ));
+                        image.DrawRectangleUsingBoundingBox(boundingBox);
                     }
 
                     // Save the new image
