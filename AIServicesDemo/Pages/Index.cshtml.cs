@@ -1,18 +1,22 @@
 ﻿using Amazon.Comprehend;
 using Amazon.Comprehend.Model;
-using Amazon.Translate;
-using Amazon.Translate.Model;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text;
+using Amazon.DynamoDBv2;
+using Amazon.DynamoDBv2.Model;
+using Amazon.Translate;
+using Amazon.Translate.Model;
+using Amazon.S3;
+using Amazon.S3.Model;
 
 namespace AIServicesDemo.Pages
 {
     public class IndexModel : PageModel
     {
         [BindProperty]
-        public string Text { get; set; } = String.Empty; 
-        public string Result { get; set; } = String.Empty;
+        public string Text { get; set; } = string.Empty; 
+        public string Result { get; set; } = string.Empty;
 
         private readonly IAmazonComprehend _comprehendClient;
         private readonly IAmazonTranslate _translateClient;
@@ -25,41 +29,13 @@ namespace AIServicesDemo.Pages
 
         public void OnGet()
         {
-
+            
         }
 
         public async Task OnPostLanguageAsync()
         {
-            var request = new DetectDominantLanguageRequest()
-            {
-                Text = Text
-            };
-
-            var response = await _comprehendClient.DetectDominantLanguageAsync(request);
-            var languageCode = response.Languages.First().LanguageCode;
-
-            var stringBuilder = new StringBuilder();
-            stringBuilder.AppendFormat("Dominant Language: <b>{0}</b><br>", languageCode);
-            stringBuilder.AppendLine("==========================<br>");
-
-            if (languageCode != "en")
-            {
-                stringBuilder.AppendFormat("Translating from <b>{0}</b>:<br>", languageCode);
-                stringBuilder.AppendLine("==========================<br>");
-
-                var translatRequest = new TranslateTextRequest
-                {
-                    Text = Text,
-                    SourceLanguageCode = languageCode,
-                    TargetLanguageCode = "en"
-                };
-
-                var translatResponse = await _translateClient.TranslateTextAsync(translatRequest);
-
-                stringBuilder.Append(translatResponse?.TranslatedText);
-            }
-
-            Result = stringBuilder.ToString();
+            // detect language of the text
+            
         }
 
         public async Task OnPostEntitiesAsync()

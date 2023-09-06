@@ -11,17 +11,17 @@ namespace AIServicesDemo.Pages
     {
         [BindProperty]
         public IFormFile? FormFile { get; set; }
-        public string FileName { get; set; } = String.Empty;
-        public string NewFileName { get; set; } = String.Empty;
-        public string Result { get; set; } = String.Empty;
+        public string FileName { get; set; } = string.Empty;
+        public string NewFileName { get; set; } = string.Empty;
+        public string Result { get; set; } = string.Empty;
 
         private readonly IAmazonRekognition _rekognitionClient;
-        private readonly IWebHostEnvironment _hostenvironment;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public RekognitionModel(IAmazonRekognition rekognitionClient, IWebHostEnvironment hostenvironment)
+        public RekognitionModel(IAmazonRekognition rekognitionClient, IWebHostEnvironment hostEnvironment)
         {
             _rekognitionClient = rekognitionClient;
-            _hostenvironment = hostenvironment;
+            _hostEnvironment = hostEnvironment;
         }
 
         public void OnGet()
@@ -31,18 +31,16 @@ namespace AIServicesDemo.Pages
         public async Task OnPostFacesAsync()
         {
             if (FormFile == null)
-            {
                 return;
-            }
+            
             // save image to display it
-            var fileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile.FileName));
-            var fullFileName = System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
+            FileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile.FileName));
+            var fullFileName = System.IO.Path.Combine(_hostEnvironment.WebRootPath, "uploads", FileName);
             var newFileName = String.Format("{0}_faces{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile.FileName));
 
-            using (var stream = new FileStream(fullFileName, FileMode.Create))
+            await using (var stream = new FileStream(fullFileName, FileMode.Create))
             {
                 await FormFile.CopyToAsync(stream);
-                FileName = fileName;
             }
 
             var memoryStream = new MemoryStream();
@@ -70,7 +68,7 @@ namespace AIServicesDemo.Pages
                     }
 
                     // Save the new image
-                    image.SaveAsJpeg(System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", newFileName));
+                    await image.SaveAsJpegAsync(System.IO.Path.Combine(_hostEnvironment.WebRootPath, "uploads", newFileName));
                     NewFileName = newFileName;
                 }
             }
@@ -79,17 +77,15 @@ namespace AIServicesDemo.Pages
         public async Task OnPostEntitiesAsync()
         {
             if (FormFile == null)
-            {
                 return;
-            }
+            
             // save image to display it
-            var fileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile.FileName));
-            var fullFileName = System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
+            FileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile.FileName));
+            var fullFileName = System.IO.Path.Combine(_hostEnvironment.WebRootPath, "uploads", FileName);
 
-            using (var stream = new FileStream(fullFileName, FileMode.Create))
+            await using (var stream = new FileStream(fullFileName, FileMode.Create))
             {
                 await FormFile.CopyToAsync(stream);
-                FileName = fileName;
             }
 
             var memoryStream = new MemoryStream();
@@ -122,17 +118,15 @@ namespace AIServicesDemo.Pages
         public async Task OnPostPPEAsync()
         {
             if (FormFile == null)
-            {
                 return;
-            }
+            
             // save image to display it
-            var fileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile.FileName));
-            var fullFileName = System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
+            FileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile.FileName));
+            var fullFileName = System.IO.Path.Combine(_hostEnvironment.WebRootPath, "uploads", FileName);
 
-            using (var stream = new FileStream(fullFileName, FileMode.Create))
+            await using (var stream = new FileStream(fullFileName, FileMode.Create))
             {
                 await FormFile.CopyToAsync(stream);
-                FileName = fileName;
             }
 
             var memoryStream = new MemoryStream();
@@ -171,17 +165,15 @@ namespace AIServicesDemo.Pages
         public async Task OnPostTextAsync()
         {
             if (FormFile == null)
-            {
                 return;
-            }
+            
             // save image to display it
-            var fileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile.FileName));
-            var fullFileName = System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", fileName);
+            FileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(FormFile.FileName));
+            var fullFileName = System.IO.Path.Combine(_hostEnvironment.WebRootPath, "uploads", FileName);
 
-            using (var stream = new FileStream(fullFileName, FileMode.Create))
+            await using (var stream = new FileStream(fullFileName, FileMode.Create))
             {
                 await FormFile.CopyToAsync(stream);
-                FileName = fileName;
             }
 
             var memoryStream = new MemoryStream();

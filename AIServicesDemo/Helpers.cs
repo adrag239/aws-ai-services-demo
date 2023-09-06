@@ -11,7 +11,7 @@ namespace AIServicesDemo
         {
             // Draw the rectangle using the bounding box values
             // They are percentages so scale them to picture
-            image.Mutate(x => x.DrawLines(
+            image.Mutate(x => x.DrawLine(
                 Rgba32.ParseHex("FF0000"),
                 5,
                 new PointF[]
@@ -32,7 +32,7 @@ namespace AIServicesDemo
         {
             // Draw the rectangle using the bounding box values
             // They are percentages so scale them to picture
-            image.Mutate(x => x.DrawLines(
+            image.Mutate(x => x.DrawLine(
                 Rgba32.ParseHex("FF0000"),
                 5,
                 new PointF[]

@@ -31,11 +31,7 @@
             </div>
             <div class="col-6 pt-3">
                 @Html.Raw(Model.Result)
-                @if (!string.IsNullOrEmpty(Model.NewPhotoFileName))
-                {
-                    <img class="w-100" src="uploads/@Model.NewPhotoFileName" />
-                }
-                else if (!string.IsNullOrEmpty(Model.PhotoFileName))
+                @if (!string.IsNullOrEmpty(Model.PhotoFileName))
                 {
                     <img class="w-100" src="uploads/@Model.PhotoFileName" />
                 }

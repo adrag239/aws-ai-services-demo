@@ -353,3 +353,5 @@ MigrationBackup/
 **/uploads/*.jpg
 **/uploads/*.jpeg
 **/uploads/*.png
+
+.DS_Store

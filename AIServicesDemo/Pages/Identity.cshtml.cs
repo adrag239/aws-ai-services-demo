@@ -15,16 +15,15 @@ namespace AIServicesDemo.Pages
         public IFormFile? PhotoFormFile { get; set; }
         public string IdentityFileName { get; set; } = String.Empty;
         public string PhotoFileName { get; set; } = String.Empty;
-        public string NewPhotoFileName { get; set; } = String.Empty;
         public string Result { get; set; } = String.Empty;
 
         private readonly IAmazonRekognition _rekognitionClient;
-        private readonly IWebHostEnvironment _hostenvironment;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public IdentityCheckModel(IAmazonRekognition rekognitionClient, IWebHostEnvironment hostenvironment)
+        public IdentityCheckModel(IAmazonRekognition rekognitionClient, IWebHostEnvironment hostEnvironment)
         {
             _rekognitionClient = rekognitionClient;
-            _hostenvironment = hostenvironment;
+            _hostEnvironment = hostEnvironment;
         }
 
         public void OnGet()
@@ -38,24 +37,21 @@ namespace AIServicesDemo.Pages
                 return;
             }
             // save id to display it
-            var identityFileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(IdentityFormFile.FileName));
-            var fullIdentityFileName = System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", identityFileName);
+            IdentityFileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(IdentityFormFile.FileName));
+            var fullIdentityFileName = System.IO.Path.Combine(_hostEnvironment.WebRootPath, "uploads", IdentityFileName);
 
-            using (var stream = new FileStream(fullIdentityFileName, FileMode.Create))
+            await using (var stream = new FileStream(fullIdentityFileName, FileMode.Create))
             {
                 await IdentityFormFile.CopyToAsync(stream);
-                IdentityFileName = identityFileName;
             }
 
             // save photo to display it
-            var photoFileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(PhotoFormFile.FileName));
-            var fullPhotoFileName = System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", photoFileName);
-            var newPhotoFileName = String.Format("{0}_id{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(IdentityFormFile.FileName));
+            PhotoFileName = String.Format("{0}{1}", Guid.NewGuid().ToString(), System.IO.Path.GetExtension(PhotoFormFile.FileName));
+            var fullPhotoFileName = System.IO.Path.Combine(_hostEnvironment.WebRootPath, "uploads", PhotoFileName);
 
-            using (var stream = new FileStream(fullPhotoFileName, FileMode.Create))
+            await using (var stream = new FileStream(fullPhotoFileName, FileMode.Create))
             {
                 await PhotoFormFile.CopyToAsync(stream);
-                PhotoFileName = photoFileName;
             }
 
             var identityMemoryStream = new MemoryStream();
@@ -84,7 +80,7 @@ namespace AIServicesDemo.Pages
                     compareFacesResponse.FaceMatches[0].Similarity);
 
                 // Load image to modify with face bounding box rectangle
-                using (var image = SixLabors.ImageSharp.Image.Load(fullPhotoFileName))
+                using (var image = await SixLabors.ImageSharp.Image.LoadAsync(fullPhotoFileName))
                 {
                     var faceDetail = compareFacesResponse.FaceMatches[0].Face;
 
@@ -95,10 +91,8 @@ namespace AIServicesDemo.Pages
                     image.DrawRectangleUsingBoundingBox(boundingBox);
 
                     // Save the new image
-                    image.SaveAsJpeg(System.IO.Path.Combine(_hostenvironment.WebRootPath, "uploads", newPhotoFileName));
-                    NewPhotoFileName = newPhotoFileName;
+                    await image.SaveAsJpegAsync(fullPhotoFileName);
                 }
-
             }
             else
             {
