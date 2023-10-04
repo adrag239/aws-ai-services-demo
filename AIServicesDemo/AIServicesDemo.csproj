@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.Bedrock" Version="3.7.200" />
+    <PackageReference Include="AWSSDK.BedrockRuntime" Version="3.7.200" />
     <PackageReference Include="AWSSDK.Comprehend" Version="3.7.200.19" />
     <PackageReference Include="AWSSDK.DynamoDBv2" Version="3.7.200.20" />
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.7" />
@@ -15,6 +17,7 @@
     <PackageReference Include="AWSSDK.SecurityToken" Version="3.7.201.17" />
     <PackageReference Include="AWSSDK.Textract" Version="3.7.200.19" />
     <PackageReference Include="AWSSDK.Translate" Version="3.7.200.19" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.0.1" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0" />
   </ItemGroup>

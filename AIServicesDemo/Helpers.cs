@@ -13,7 +13,7 @@ namespace AIServicesDemo
             // They are percentages so scale them to picture
             image.Mutate(x => x.DrawLine(
                 Rgba32.ParseHex("FF0000"),
-                5,
+                15,
                 new PointF[]
                 {
                     new PointF(image.Width * boundingBox.Left, image.Height * boundingBox.Top),
@@ -34,7 +34,7 @@ namespace AIServicesDemo
             // They are percentages so scale them to picture
             image.Mutate(x => x.DrawLine(
                 Rgba32.ParseHex("FF0000"),
-                5,
+                15,
                 new PointF[]
                 {
                     new PointF(image.Width * boundingBox.Left, image.Height * boundingBox.Top),

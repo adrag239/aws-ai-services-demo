@@ -185,7 +185,7 @@ namespace AIServicesDemo.Pages
             };
 
             var detectTextResponse = await _rekognitionClient.DetectTextAsync(detectTextRequest);
-
+            
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("Text:<br>");
             stringBuilder.AppendLine("==========================<br>");

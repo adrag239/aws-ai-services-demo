@@ -40,9 +40,9 @@
                                 <li>
                                     <a asp-area="" asp-page="/Index" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Text analysis</a>
                                 </li>
-                                <li>
+                                @*<li>
                                     <a asp-area="" asp-page="/Rekognition" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Image analysis</a>
-                                </li>
+                                </li>*@
                             </ul>
                         </div>
                     </li>
@@ -53,22 +53,28 @@
                         <div class="collapse show" id="dashboard-collapse">
                             <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
                                 <li>
-                                    <a asp-area="" asp-page="/IDP" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Classification</a>
+                                    <a asp-area="" asp-page="/IDP" class="link-body-emphasis d-inline-flex text-decoration-none rounded">1. Classification</a>
                                 </li>
                                 <li>
-                                    <a asp-area="" asp-page="/AnalyzeDocument" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Text / Tables / Forms</a>
+                                    <a asp-area="" asp-page="/AnalyzeDocument" class="link-body-emphasis d-inline-flex text-decoration-none rounded">2a. Extraction - Text / Tables / Forms</a>
                                 </li>
                                 <li>
-                                    <a asp-area="" asp-page="/AnalyzeExpense" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Receipts</a>
+                                    <a asp-area="" asp-page="/AnalyzeExpense" class="link-body-emphasis d-inline-flex text-decoration-none rounded">2b. Extraction - Invoices</a>
                                 </li>
                                 <li>
-                                    <a asp-area="" asp-page="/DetectSignatures" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Signatures</a>
+                                    <a asp-area="" asp-page="/AnalyzeID" class="link-body-emphasis d-inline-flex text-decoration-none rounded">2c. Extraction - ID</a>
+                                </li>
+                                @*<li>
+                                    <a asp-area="" asp-page="/DetectSignatures" class="link-body-emphasis d-inline-flex text-decoration-none rounded">2d. Extraction - Signatures</a>
+                                </li>*@
+                                <li>
+                                    <a asp-area="" asp-page="/Query" class="link-body-emphasis d-inline-flex text-decoration-none rounded">2e. Extraction - Query based</a>
                                 </li>
                                 <li>
-                                    <a asp-area="" asp-page="/Query" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Query</a>
+                                    <a asp-area="" asp-page="/DetectPII" class="link-body-emphasis d-inline-flex text-decoration-none rounded">3. Enrichment - PII</a>
                                 </li>
                                 <li>
-                                    <a asp-area="" asp-page="/Identity" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Identity check</a>
+                                    <a asp-area="" asp-page="/Identity" class="link-body-emphasis d-inline-flex text-decoration-none rounded">4. Validation - Identity check</a>
                                 </li>
                             </ul>
                         </div>

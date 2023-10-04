@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text;
 using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace AIServicesDemo.Pages
 {
@@ -83,7 +84,7 @@ namespace AIServicesDemo.Pages
                 }
                 
                 // Save the new image to display it
-                await image.SaveAsJpegAsync(fullFileName);
+                await image.SaveAsJpegAsync(fullFileName, new JpegEncoder { ColorType = JpegEncodingColor.Rgb});
             }
 
             Result = stringBuilder.ToString();

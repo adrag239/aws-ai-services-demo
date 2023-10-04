@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Text;
 using Amazon.Textract;
 using Amazon.Textract.Model;
+using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace AIServicesDemo.Pages
 {
@@ -61,10 +62,7 @@ namespace AIServicesDemo.Pages
                 {
                     if (block.BlockType.Value == "LINE")
                     {
-                        stringBuilder.AppendFormat(
-                            "Line: <b>{0}</b>, Confidence: <b>{1}</b><br>",
-                            block.Text,
-                            block.Confidence);
+                        stringBuilder.AppendFormat("{0}<br>", block.Text);
 
                         // Get the bounding box
                         var boundingBox = block.Geometry.BoundingBox;
@@ -75,7 +73,7 @@ namespace AIServicesDemo.Pages
                 }
 
                 // Save the new image
-                await image.SaveAsJpegAsync(fullFileName);
+                await image.SaveAsJpegAsync(fullFileName, new JpegEncoder { ColorType = JpegEncodingColor.Rgb});
             }
             
             Result = stringBuilder.ToString();
@@ -116,6 +114,20 @@ namespace AIServicesDemo.Pages
                 {
                     if (block.BlockType.Value == "KEY_VALUE_SET")
                     {
+                        foreach (var relation in block.Relationships)
+                        {
+                            if (relation.Type == RelationshipType.CHILD) {
+                                foreach (var id in relation.Ids)
+                                {
+                                    var related = analyzeDocumentResponse.Blocks.First(b => b.Id == id);
+
+                                    stringBuilder.AppendFormat("{0} ", related.Text);    
+                                }
+                            }
+                            
+                            stringBuilder.AppendFormat("<br>");    
+                        }
+                        
                         // Get the bounding box
                         var boundingBox = block.Geometry.BoundingBox;
 
@@ -125,7 +137,7 @@ namespace AIServicesDemo.Pages
                 }
 
                 // Save the new image
-                await image.SaveAsJpegAsync(fullFileName);
+                await image.SaveAsJpegAsync(fullFileName, new JpegEncoder { ColorType = JpegEncodingColor.Rgb});
             }
 
             Result = stringBuilder.ToString();
@@ -175,7 +187,7 @@ namespace AIServicesDemo.Pages
                 }
 
                 // Save the new image
-                await image.SaveAsJpegAsync(fullFileName);
+                await image.SaveAsJpegAsync(fullFileName, new JpegEncoder { ColorType = JpegEncodingColor.Rgb});
             }
 
             Result = stringBuilder.ToString();

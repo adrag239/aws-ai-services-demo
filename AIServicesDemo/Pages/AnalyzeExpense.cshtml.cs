@@ -55,20 +55,6 @@ namespace AIServicesDemo.Pages
 
             foreach (var document in response.ExpenseDocuments)
             {
-                stringBuilder.AppendLine("Summary:<br>");
-                stringBuilder.AppendLine("==========================<br>");
-                foreach (var field in document.SummaryFields)
-                {
-                    if (field.Type.Text != "OTHER")
-                    {
-                        stringBuilder.AppendFormat(
-                            "Type: <b>{0}</b>, Text: <b>{1}</b><br>",
-                            field.Type.Text,
-                            field.ValueDetection.Text);
-                    }
-                }
-
-                stringBuilder.AppendLine("==========================<br>");
                 stringBuilder.AppendLine("Items:<br>");
                 stringBuilder.AppendLine("==========================<br>");
                 foreach (var itemGroup in document.LineItemGroups)
@@ -84,6 +70,22 @@ namespace AIServicesDemo.Pages
                             price);               
                     }            
                 }
+                
+                stringBuilder.AppendLine("==========================<br>");
+                stringBuilder.AppendLine("Summary:<br>");
+                stringBuilder.AppendLine("==========================<br>");
+                foreach (var field in document.SummaryFields)
+                {
+                    if (field.Type.Text != "OTHER")
+                    {
+                        stringBuilder.AppendFormat(
+                            "Type: <b>{0}</b>, Text: <b>{1}</b><br>",
+                            field.Type.Text,
+                            field.ValueDetection.Text);
+                    }
+                }
+
+                
             }
 
             Result = stringBuilder.ToString();

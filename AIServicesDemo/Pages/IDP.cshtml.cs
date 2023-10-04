@@ -22,9 +22,11 @@ namespace AIServicesDemo.Pages
         private readonly IWebHostEnvironment _hostEnvironment;
 
         private const string BUCKET_NAME = "adrag-idp";
-        private const string DOCUMENT_CLASSIFIER_NAME = "ReInvent-IDP-Demo-Doc-Classifier";
+        //private const string DOCUMENT_CLASSIFIER_NAME = "ReInvent-IDP-Demo-Doc-Classifier";
+        private const string DOCUMENT_CLASSIFIER_NAME = "ReInvent-IDP-Insurance-Demo-Doc-Classifier";
         private const string DOCUMENT_CLASSIFIER_VERSION = "IDP-v1";
-        private const string DOCUMENT_CLASSIFIER_ENDPOINT_NAME = "ReInvent-IDP-Demo-Endpoint";
+        //private const string DOCUMENT_CLASSIFIER_ENDPOINT_NAME = "ReInvent-IDP-Demo-Endpoint";
+        private const string DOCUMENT_CLASSIFIER_ENDPOINT_NAME = "ReInvent-IDP-Insurance-Demo-Endpoint";
         
         public IDPModel(IAmazonComprehend comprehendClient, IAmazonTextract textractClient, IWebHostEnvironment hostEnvironment)
         {
@@ -149,7 +151,8 @@ namespace AIServicesDemo.Pages
                     InputDataConfig = new DocumentClassifierInputDataConfig
                     {
                         DataFormat = DocumentClassifierDataFormat.COMPREHEND_CSV,
-                        S3Uri = $"s3://{BUCKET_NAME}/classifier-training.csv"
+                        //S3Uri = $"s3://{BUCKET_NAME}/classifier-training.csv"
+                        S3Uri = $"s3://{BUCKET_NAME}/insurance_comprehend_train_data.csv"
                     }
                 };
                 var classifierResponse = await _comprehendClient.CreateDocumentClassifierAsync(classifierRequest);

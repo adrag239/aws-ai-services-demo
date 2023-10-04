@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Amazon.Textract;
 using Amazon.Textract.Model;
+using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace AIServicesDemo.Pages
 {
@@ -65,7 +66,7 @@ namespace AIServicesDemo.Pages
                 }
 
                 // Save the new image
-                await image.SaveAsJpegAsync(fullFileName);
+                await image.SaveAsJpegAsync(fullFileName, new JpegEncoder { ColorType = JpegEncodingColor.Rgb});
             }
         }
     }
